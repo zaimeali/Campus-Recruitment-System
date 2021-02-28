@@ -7,12 +7,22 @@ import {
   Image,
   Dimensions,
   SafeAreaView,
+  Alert,
 } from "react-native";
 
 // Styles
 import { authCommonStyles as styles } from "./../styles/screenStyles";
 
+// Firebase
+import firebase from "firebase";
+
+// Redux
+import { useDispatch } from "react-redux";
+import { registerSuccess, setUID, setUserDetail } from "../redux/userReducer";
+
 export default function RecruiterRegister({ navigation, userType }) {
+  const dispatch = useDispatch();
+
   const [companyName, setCompanyName] = useState("");
   const [password, setPassword] = useState("");
   const [description, setDescription] = useState("");
@@ -45,6 +55,34 @@ export default function RecruiterRegister({ navigation, userType }) {
       setErrCname("Company Name is required");
     }
 
+    const registerUser = async (uid) => {
+      await firebase
+        .firestore()
+        .collection("recruiter")
+        .doc(uid)
+        .set({
+          companyName: companyName,
+          description: description,
+          careerEmail: careerEmail,
+          address: address,
+          numEmployess: numEmployess,
+        })
+        .then(() => {
+          dispatch(registerSuccess(companyName));
+          dispatch(setUID(uid));
+          dispatch(
+            setUserDetail({
+              companyName: companyName,
+              description: description,
+              careerEmail: careerEmail,
+              address: address,
+              numEmployess: numEmployess,
+            })
+          );
+        })
+        .catch((err) => Alert.alert("", `${err.message}`));
+    };
+
     if (
       errCname.length === 0 &&
       errAddress.length === 0 &&
@@ -52,7 +90,16 @@ export default function RecruiterRegister({ navigation, userType }) {
       errEmail.length === 0 &&
       errPass.length === 0
     ) {
-      console.log("nice");
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(careerEmail, password)
+        .then((authUser) => {
+          authUser.user.updateProfile({
+            displayName: companyName,
+          });
+          registerUser(authUser.user.uid);
+        })
+        .catch((err) => Alert.alert("", `${err.message}`));
     }
   };
 

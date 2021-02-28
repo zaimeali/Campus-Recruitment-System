@@ -7,13 +7,23 @@ import {
   Image,
   Dimensions,
   SafeAreaView,
+  Alert,
 } from "react-native";
 
 // Styles
 import { authCommonStyles as styles } from "./../../styles/screenStyles";
 
+// firebase
+import firebase from "firebase";
+
+// redux
+import { useDispatch } from "react-redux";
+import { loginSuccess, setUID } from "../../redux/userReducer";
+
 export default function Login({ route, navigation }) {
   const { userType } = route.params;
+
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
@@ -30,7 +40,14 @@ export default function Login({ route, navigation }) {
       setPassword("");
     }
     if (errorEmail.length === 0 && errorPassword.length === 0) {
-      console.log("Nice");
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((authUser) => {
+          dispatch(loginSuccess(authUser.user.displayName));
+          dispatch(setUID(authUser.user.uid));
+        })
+        .catch((err) => Alert.alert("", `${err.message}`));
     }
   };
 
@@ -180,11 +197,15 @@ export default function Login({ route, navigation }) {
       </View>
 
       <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("Register", {
-            userType: userType,
-          })
-        }
+        onPress={() => {
+          if (userType !== null) {
+            navigation.navigate("Register", {
+              userType: userType,
+            });
+          } else {
+            navigation.navigate("Landing");
+          }
+        }}
       >
         <Text
           style={{

@@ -7,13 +7,23 @@ import {
   Image,
   Dimensions,
   SafeAreaView,
-  ScrollView,
+  Alert,
 } from "react-native";
 
 // Styles
 import { authCommonStyles as styles } from "./../styles/screenStyles";
 
+// Firebase
+import firebase from "firebase/app";
+import "firebase/firestore";
+
+// Redux
+import { useDispatch } from "react-redux";
+import { registerSuccess, setUID, setUserDetail } from "../redux/userReducer";
+
 export default function StudentRegister({ navigation, userType }) {
+  const dispatch = useDispatch();
+
   const [name, setName] = useState("");
   const [rollNumber, setRollNumber] = useState("");
   const [email, setEmail] = useState("");
@@ -55,6 +65,36 @@ export default function StudentRegister({ navigation, userType }) {
       setErrCS("You forgot to mention current semester");
     }
 
+    const registerUser = async (uid) => {
+      await firebase
+        .firestore()
+        .collection("student")
+        .doc(uid)
+        .set({
+          currentSemester: currentSemester,
+          cgpa: cgpa,
+          major: major,
+          rollNumber: rollNumber,
+          email: email,
+          name: name,
+        })
+        .then(() => {
+          dispatch(registerSuccess(name));
+          dispatch(setUID(uid));
+          dispatch(
+            setUserDetail({
+              currentSemester: currentSemester,
+              cgpa: cgpa,
+              major: major,
+              rollNumber: rollNumber,
+              email: email,
+              name: name,
+            })
+          );
+        })
+        .catch((err) => Alert.alert("", `${err.message}`));
+    };
+
     if (
       errEmail.length === 0 &&
       errPass.length === 0 &&
@@ -64,7 +104,19 @@ export default function StudentRegister({ navigation, userType }) {
       errMajor.length === 0 &&
       errCS.length === 0
     ) {
-      console.log("Very Nice");
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((authUser) => {
+          authUser.user.updateProfile({
+            displayName: name,
+          });
+          registerUser(authUser.user.uid);
+        })
+        .catch((err) => {
+          Alert.alert("", `${err.message}`);
+          setPassword("");
+        });
     }
   };
 

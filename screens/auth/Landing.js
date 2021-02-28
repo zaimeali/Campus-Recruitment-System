@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image, Pressable } from "react-native";
 
 // Styles
 import { authCommonStyles as styles } from "./../../styles/screenStyles";
@@ -55,6 +55,29 @@ export default function Landing({ navigation }) {
           Campus Recruitment System
         </Text>
         <HR />
+        <Pressable
+          style={{
+            backgroundColor: "#4E51BF",
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            borderRadius: 5,
+          }}
+          onPress={() =>
+            navigation.navigate("Login", {
+              userType: null,
+            })
+          }
+        >
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 16,
+              fontWeight: "700",
+            }}
+          >
+            Login
+          </Text>
+        </Pressable>
       </View>
       <View
         style={{
