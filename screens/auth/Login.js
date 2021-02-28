@@ -18,7 +18,7 @@ import firebase from "firebase";
 
 // redux
 import { useDispatch } from "react-redux";
-import { loginSuccess, setUID } from "../../redux/userReducer";
+import { loginSuccess, setUID, setUserDetail } from "../../redux/userReducer";
 
 export default function Login({ route, navigation }) {
   const { userType } = route.params;
@@ -44,8 +44,13 @@ export default function Login({ route, navigation }) {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then((authUser) => {
-          dispatch(loginSuccess(authUser.user.displayName));
+          dispatch(
+            setUserDetail({
+              email: email,
+            })
+          );
           dispatch(setUID(authUser.user.uid));
+          dispatch(loginSuccess(authUser.user.displayName));
         })
         .catch((err) => Alert.alert("", `${err.message}`));
     }

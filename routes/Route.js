@@ -12,7 +12,7 @@ import firebase from "firebase";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
-import { loginSuccess } from "../redux/userReducer";
+import { loginSuccess, setUserDetail } from "../redux/userReducer";
 
 export default function Route() {
   const { user } = useSelector((state) => state.user);
@@ -24,7 +24,12 @@ export default function Route() {
       if (authUser?.displayName) {
         dispatch(loginSuccess(authUser.displayName));
       } else {
-        if (authUser.email === "admin@admin.com") {
+        if (authUser?.email === "admin@admin.com") {
+          dispatch(
+            setUserDetail({
+              email: authUser.email,
+            })
+          );
           dispatch(loginSuccess("Admin"));
         }
       }

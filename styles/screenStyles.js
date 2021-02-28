@@ -20,5 +20,7 @@ export const rootCommonStyles = StyleSheet.create({
   },
   body: {
     flex: 0.9,
+    width: WIDTH,
+    padding: 10,
   },
 });
