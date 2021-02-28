@@ -12,7 +12,7 @@ import {
 // Styles
 import { authCommonStyles as styles } from "./../styles/screenStyles";
 
-export default function RecruiterRegister() {
+export default function RecruiterRegister({ navigation, userType }) {
   const [companyName, setCompanyName] = useState("");
   const [password, setPassword] = useState("");
   const [description, setDescription] = useState("");
@@ -35,7 +35,7 @@ export default function RecruiterRegister() {
         style={{
           width: Dimensions.get("window").width,
           paddingHorizontal: 20,
-          paddingTop: 10,
+          paddingVertical: 10,
         }}
       >
         <Text
@@ -310,6 +310,21 @@ export default function RecruiterRegister() {
           </Text>
         </TouchableOpacity>
       </View>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("Login", {
+            userType: userType,
+          })
+        }
+      >
+        <Text
+          style={{
+            color: "#24252A",
+          }}
+        >
+          Have an account?
+        </Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }

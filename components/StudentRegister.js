@@ -12,7 +12,7 @@ import {
 // Styles
 import { authCommonStyles as styles } from "./../styles/screenStyles";
 
-export default function StudentRegister() {
+export default function StudentRegister({ navigation, userType }) {
   const [name, setName] = useState("");
   const [rollNumber, setRollNumber] = useState("");
   const [email, setEmail] = useState("");
@@ -36,7 +36,7 @@ export default function StudentRegister() {
         style={{
           width: Dimensions.get("window").width,
           paddingHorizontal: 20,
-          paddingTop: 10,
+          paddingVertical: 10,
         }}
       >
         <Text
@@ -285,6 +285,21 @@ export default function StudentRegister() {
           </Text>
         </TouchableOpacity>
       </View>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("Login", {
+            userType: userType,
+          })
+        }
+      >
+        <Text
+          style={{
+            color: "#24252A",
+          }}
+        >
+          Have an account?
+        </Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }

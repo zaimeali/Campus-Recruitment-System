@@ -9,7 +9,11 @@ export default function Register({ route, navigation }) {
 
   return (
     <Fragment>
-      {userType === "Student" ? <StudentRegister /> : <RecruiterRegister />}
+      {userType === "Student" ? (
+        <StudentRegister navigation={navigation} userType={userType} />
+      ) : (
+        <RecruiterRegister navigation={navigation} userType={userType} />
+      )}
     </Fragment>
   );
 }
