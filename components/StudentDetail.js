@@ -1,8 +1,26 @@
 import React from "react";
-import { View, Text, Pressable, Alert } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 
-export default function StudentDetail({ userDetail, userRole }) {
+// firebase
+import firebase from "firebase";
+
+export default function StudentDetail({
+  userDetail,
+  userRole,
+  navigation,
+  uid,
+}) {
   const { data } = userDetail;
+
+  const onDelete = async () => {
+    await firebase
+      .firestore()
+      .collection("student")
+      .doc(uid)
+      .delete()
+      .then(() => navigation.navigate("Home"))
+      .catch((err) => alert(`${err.message}`));
+  };
 
   return (
     <View style={{}}>
@@ -36,14 +54,14 @@ export default function StudentDetail({ userDetail, userRole }) {
       </View>
 
       {userRole === "Admin" && (
-        <Pressable
+        <TouchableOpacity
+          onPress={() => {
+            onDelete();
+          }}
           style={{
             backgroundColor: "#4E51BF",
             padding: 10,
             borderRadius: 10,
-          }}
-          onPress={() => {
-            Alert.alert("", "Will be deleted");
           }}
         >
           <Text
@@ -56,7 +74,7 @@ export default function StudentDetail({ userDetail, userRole }) {
           >
             Delete
           </Text>
-        </Pressable>
+        </TouchableOpacity>
       )}
     </View>
   );

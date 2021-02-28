@@ -84,7 +84,17 @@ export default function Home({ navigation }) {
     };
 
     checkDataExist();
-  }, []);
+
+    const unsubscribe = navigation.addListener("focus", () => {
+      let listData = getData("student")
+        .then((data) => setStudentList(data))
+        .catch((err) => console.error(err));
+      listData = getData("recruiter")
+        .then((data) => setRecruiterList(data))
+        .catch((err) => console.error(err));
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -133,6 +143,7 @@ export default function Home({ navigation }) {
                           userDetail: item,
                           userType: "Recruiter",
                           userRole: "Admin",
+                          uid: item.id,
                         });
                       }}
                     >
@@ -191,6 +202,7 @@ export default function Home({ navigation }) {
                           userDetail: item,
                           userType: "Student",
                           userRole: "Admin",
+                          uid: item.id,
                         });
                       }}
                     >

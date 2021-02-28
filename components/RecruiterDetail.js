@@ -1,8 +1,26 @@
 import React from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Alert } from "react-native";
 
-export default function RecruiterDetail({ userDetail, userRole }) {
+// firebase
+import firebase from "firebase";
+
+export default function RecruiterDetail({
+  userDetail,
+  userRole,
+  navigation,
+  uid,
+}) {
   const { data } = userDetail;
+
+  const onDelete = async () => {
+    await firebase
+      .firestore()
+      .collection("recruiter")
+      .doc(uid)
+      .delete()
+      .then(() => navigation.navigate("Home"))
+      .catch((err) => alert(`${err.message}`));
+  };
 
   if (data.numEmployess === "<5") {
     data.numEmployess = "Less than 5";
@@ -49,7 +67,7 @@ export default function RecruiterDetail({ userDetail, userRole }) {
             borderRadius: 10,
           }}
           onPress={() => {
-            Alert.alert("", "Will be deleted");
+            onDelete();
           }}
         >
           <Text

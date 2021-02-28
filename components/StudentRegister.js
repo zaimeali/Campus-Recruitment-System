@@ -79,7 +79,6 @@ export default function StudentRegister({ navigation, userType }) {
           name: name,
         })
         .then(() => {
-          dispatch(registerSuccess(name));
           dispatch(setUID(uid));
           dispatch(
             setUserDetail({
@@ -91,6 +90,7 @@ export default function StudentRegister({ navigation, userType }) {
               name: name,
             })
           );
+          dispatch(registerSuccess(name));
         })
         .catch((err) => Alert.alert("", `${err.message}`));
     };

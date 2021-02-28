@@ -68,7 +68,6 @@ export default function RecruiterRegister({ navigation, userType }) {
           numEmployess: numEmployess,
         })
         .then(() => {
-          dispatch(registerSuccess(companyName));
           dispatch(setUID(uid));
           dispatch(
             setUserDetail({
@@ -79,6 +78,7 @@ export default function RecruiterRegister({ navigation, userType }) {
               numEmployess: numEmployess,
             })
           );
+          dispatch(registerSuccess(companyName));
         })
         .catch((err) => Alert.alert("", `${err.message}`));
     };
