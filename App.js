@@ -1,21 +1,20 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+
+// Routes
+import Route from "./routes/Route";
+
+// Firebase
+// import * as firebase from "firebase";
+// import { firebaseConfig } from "./auth/firebase";
+
+// Initialize Firebase
+// if (firebase.apps.length === 0) {
+//   firebase.initializeApp(firebaseConfig);
+// }
+
+// Redux
+// import { Provider } from "react-redux";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app! Nice</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+  return <Route />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
