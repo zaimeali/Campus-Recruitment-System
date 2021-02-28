@@ -7,6 +7,7 @@ import {
   Image,
   Dimensions,
   SafeAreaView,
+  ScrollView,
 } from "react-native";
 
 // Styles
@@ -21,7 +22,51 @@ export default function StudentRegister({ navigation, userType }) {
   const [major, setMajor] = useState("");
   const [currentSemester, setCurrentSemester] = useState("");
 
-  const onSubmit = () => {};
+  const [errName, setErrName] = useState("");
+  const [errRN, setErrRN] = useState("");
+  const [errEmail, setErrEmail] = useState("");
+  const [errPass, setErrPass] = useState("");
+  const [errCGPA, setErrCGPA] = useState("");
+  const [errMajor, setErrMajor] = useState("");
+  const [errCS, setErrCS] = useState("");
+
+  const onSubmit = () => {
+    let regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if (!regexEmail.test(email)) {
+      setErrEmail("Email is not in correct format");
+    }
+    if (password.length < 8) {
+      setErrPass("Password length should be 8");
+      setPassword("");
+    }
+    if (name.length < 3) {
+      setErrName("Name length should be greater than 8");
+    }
+    if (rollNumber.length === 0) {
+      setErrRN("You forgot to mention your Roll Number");
+    }
+    if (cgpa.length === 0) {
+      setErrCGPA("CGPA is required");
+    }
+    if (major.length === 0) {
+      setErrMajor("Please type major");
+    }
+    if (currentSemester.length === 0) {
+      setErrCS("You forgot to mention current semester");
+    }
+
+    if (
+      errEmail.length === 0 &&
+      errPass.length === 0 &&
+      errName.length === 0 &&
+      errRN.length === 0 &&
+      errCGPA.length === 0 &&
+      errMajor.length === 0 &&
+      errCS.length === 0
+    ) {
+      console.log("Very Nice");
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -87,8 +132,19 @@ export default function StudentRegister({ navigation, userType }) {
             onChangeText={(e) => {
               setName(e);
             }}
+            onFocus={() => {
+              setErrName("");
+            }}
+            onBlur={() => {
+              if (name.length === 0) {
+                setErrName("Name is required");
+              }
+            }}
           />
         </View>
+        {errName.length !== 0 && (
+          <Text style={{ textAlign: "center", color: "red" }}>{errName}</Text>
+        )}
 
         <View
           style={{
@@ -115,9 +171,21 @@ export default function StudentRegister({ navigation, userType }) {
             }}
             placeholder="Enter Password"
             value={password}
+            secureTextEntry={true}
             onChangeText={(e) => setPassword(e)}
+            onFocus={() => {
+              setErrPass("");
+            }}
+            onBlur={() => {
+              if (password.length === 0) {
+                setErrPass("Password is required");
+              }
+            }}
           />
         </View>
+        {errPass.length !== 0 && (
+          <Text style={{ textAlign: "center", color: "red" }}>{errPass}</Text>
+        )}
 
         <View
           style={{
@@ -145,8 +213,19 @@ export default function StudentRegister({ navigation, userType }) {
             placeholder="Enter your Roll Number"
             onChangeText={(e) => setRollNumber(e)}
             value={rollNumber}
+            onFocus={() => {
+              setErrRN("");
+            }}
+            onBlur={() => {
+              if (rollNumber.length === 0) {
+                setErrRN("Roll Number is required");
+              }
+            }}
           />
         </View>
+        {errRN.length !== 0 && (
+          <Text style={{ textAlign: "center", color: "red" }}>{errRN}</Text>
+        )}
 
         <View
           style={{
@@ -174,8 +253,19 @@ export default function StudentRegister({ navigation, userType }) {
             placeholder="Enter Your Email"
             value={email}
             onChangeText={(e) => setEmail(e)}
+            onFocus={() => {
+              setErrEmail("");
+            }}
+            onBlur={() => {
+              if (email.length === 0) {
+                setErrEmail("Email is required");
+              }
+            }}
           />
         </View>
+        {errEmail.length !== 0 && (
+          <Text style={{ textAlign: "center", color: "red" }}>{errEmail}</Text>
+        )}
 
         <View
           style={{
@@ -203,8 +293,19 @@ export default function StudentRegister({ navigation, userType }) {
             placeholder="Enter Your Current GPA"
             value={cgpa}
             onChangeText={(e) => setCgpa(e)}
+            onFocus={() => {
+              setErrCGPA("");
+            }}
+            onBlur={() => {
+              if (cgpa.length === 0) {
+                setErrCGPA("CGPA is required");
+              }
+            }}
           />
         </View>
+        {errCGPA.length !== 0 && (
+          <Text style={{ textAlign: "center", color: "red" }}>{errCGPA}</Text>
+        )}
 
         <View
           style={{
@@ -232,8 +333,19 @@ export default function StudentRegister({ navigation, userType }) {
             placeholder="Enter Your Major"
             value={major}
             onChangeText={(e) => setMajor(e)}
+            onFocus={() => {
+              setErrMajor("");
+            }}
+            onBlur={() => {
+              if (major.length === 0) {
+                setErrMajor("Major is required");
+              }
+            }}
           />
         </View>
+        {errMajor.length !== 0 && (
+          <Text style={{ textAlign: "center", color: "red" }}>{errMajor}</Text>
+        )}
 
         <View
           style={{
@@ -261,8 +373,19 @@ export default function StudentRegister({ navigation, userType }) {
             placeholder="Enter Your Current Semester"
             value={currentSemester}
             onChangeText={(e) => setCurrentSemester(e)}
+            onFocus={() => {
+              setErrCS("");
+            }}
+            onBlur={() => {
+              if (currentSemester.length === 0) {
+                setErrCS("Company Name is required");
+              }
+            }}
           />
         </View>
+        {errCS.length !== 0 && (
+          <Text style={{ textAlign: "center", color: "red" }}>{errCS}</Text>
+        )}
 
         <TouchableOpacity
           style={{
@@ -272,6 +395,7 @@ export default function StudentRegister({ navigation, userType }) {
             borderRadius: 10,
             marginTop: 20,
           }}
+          onPress={() => onSubmit()}
         >
           <Text
             style={{

@@ -11,3 +11,20 @@ export const hrStyle = StyleSheet.create({
     marginVertical: 10,
   },
 });
+
+export const headerStyle = StyleSheet.create({
+  container: {
+    backgroundColor: "#4E51BF",
+    width: WIDTH,
+    height: 100,
+    justifyContent: "flex-end",
+    paddingBottom: 20,
+    alignItems: "center",
+    flex: 0.1,
+  },
+  heading: {
+    color: "#fff",
+    fontWeight: "700",
+    fontSize: 18,
+  },
+});

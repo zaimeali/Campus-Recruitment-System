@@ -16,7 +16,23 @@ export default function Login({ route, navigation }) {
   const { userType } = route.params;
 
   const [email, setEmail] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
+
+  const onSubmit = () => {
+    let regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if (!regexEmail.test(email)) {
+      setErrorEmail("Email is not in correct format");
+    }
+    if (password.length < 8) {
+      setErrorPassword("Password length should be 8");
+      setPassword("");
+    }
+    if (errorEmail.length === 0 && errorPassword.length === 0) {
+      console.log("Nice");
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -71,8 +87,26 @@ export default function Login({ route, navigation }) {
             placeholder="Enter Email"
             value={email}
             onChangeText={(e) => setEmail(e)}
+            onFocus={() => {
+              setErrorEmail("");
+            }}
+            onBlur={() => {
+              if (email.length === 0) {
+                setErrorEmail("Email is required");
+              }
+            }}
           />
         </View>
+        {errorEmail.length !== 0 && (
+          <Text
+            style={{
+              textAlign: "center",
+              color: "red",
+            }}
+          >
+            {errorEmail}
+          </Text>
+        )}
 
         <View
           style={{
@@ -97,11 +131,30 @@ export default function Login({ route, navigation }) {
               borderBottomColor: "#24252A",
               paddingVertical: 5,
             }}
+            secureTextEntry={true}
             placeholder="Enter Password"
             value={password}
             onChangeText={(e) => setPassword(e)}
+            onFocus={() => {
+              setErrorPassword("");
+            }}
+            onBlur={() => {
+              if (password.length === 0) {
+                setErrorPassword("Password is required");
+              }
+            }}
           />
         </View>
+        {errorPassword.length !== 0 && (
+          <Text
+            style={{
+              textAlign: "center",
+              color: "red",
+            }}
+          >
+            {errorPassword}
+          </Text>
+        )}
 
         <TouchableOpacity
           style={{
@@ -111,6 +164,7 @@ export default function Login({ route, navigation }) {
             borderRadius: 10,
             marginTop: 20,
           }}
+          onPress={() => onSubmit()}
         >
           <Text
             style={{
@@ -124,6 +178,7 @@ export default function Login({ route, navigation }) {
           </Text>
         </TouchableOpacity>
       </View>
+
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("Register", {

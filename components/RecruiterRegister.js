@@ -20,7 +20,41 @@ export default function RecruiterRegister({ navigation, userType }) {
   const [address, setAddress] = useState("");
   const [numEmployess, setNumEmployess] = useState("");
 
-  const onSubmit = () => {};
+  const [errCname, setErrCname] = useState("");
+  const [errPass, setErrPass] = useState("");
+  const [errDes, setErrDes] = useState("");
+  const [errEmail, setErrEmail] = useState("");
+  const [errAddress, setErrAddress] = useState("");
+
+  const onSubmit = () => {
+    let regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if (!regexEmail.test(careerEmail)) {
+      setErrEmail("Email is not in correct format");
+    }
+    if (password.length < 8) {
+      setErrPass("Password length should be 8");
+      setPassword("");
+    }
+    if (description.length === 0) {
+      setErrDes("Description is required");
+    }
+    if (address.length === 0) {
+      setErrAddress("Address is required");
+    }
+    if (companyName.length === 0 || companyName.length < 3) {
+      setErrCname("Company Name is required");
+    }
+
+    if (
+      errCname.length === 0 &&
+      errAddress.length === 0 &&
+      errDes.length === 0 &&
+      errEmail.length === 0 &&
+      errPass.length === 0
+    ) {
+      console.log("nice");
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -57,6 +91,7 @@ export default function RecruiterRegister({ navigation, userType }) {
         >
           Create an account
         </Text>
+
         <View
           style={{
             flexDirection: "row",
@@ -76,8 +111,6 @@ export default function RecruiterRegister({ navigation, userType }) {
           <TextInput
             style={{
               width: "85%",
-              //   backgroundColor: "#F4F5FE",
-              //   borderRadius: 5,
               marginLeft: 10,
               borderBottomWidth: 1,
               borderBottomColor: "#24252A",
@@ -88,8 +121,19 @@ export default function RecruiterRegister({ navigation, userType }) {
             onChangeText={(e) => {
               setCompanyName(e);
             }}
+            onFocus={() => {
+              setErrCname("");
+            }}
+            onBlur={() => {
+              if (companyName.length === 0) {
+                setErrCname("Company Name is required");
+              }
+            }}
           />
         </View>
+        {errCname.length !== 0 && (
+          <Text style={{ textAlign: "center", color: "red" }}>{errCname}</Text>
+        )}
 
         <View
           style={{
@@ -109,18 +153,28 @@ export default function RecruiterRegister({ navigation, userType }) {
           <TextInput
             style={{
               width: "85%",
-              //   backgroundColor: "#F4F5FE",
-              //   borderRadius: 5,
               marginLeft: 10,
               borderBottomWidth: 1,
               borderBottomColor: "#24252A",
               paddingVertical: 5,
             }}
+            secureTextEntry={true}
             placeholder="Enter Password"
             value={password}
             onChangeText={(e) => setPassword(e)}
+            onFocus={() => {
+              setErrPass("");
+            }}
+            onBlur={() => {
+              if (password.length === 0) {
+                setErrPass("Password is required");
+              }
+            }}
           />
         </View>
+        {errPass.length !== 0 && (
+          <Text style={{ textAlign: "center", color: "red" }}>{errPass}</Text>
+        )}
 
         <View
           style={{
@@ -152,8 +206,19 @@ export default function RecruiterRegister({ navigation, userType }) {
             placeholder="Enter Company Description"
             onChangeText={(e) => setDescription(e)}
             value={description}
+            onFocus={() => {
+              setErrDes("");
+            }}
+            onBlur={() => {
+              if (description.length === 0) {
+                setErrDes("Description is required");
+              }
+            }}
           />
         </View>
+        {errDes.length !== 0 && (
+          <Text style={{ textAlign: "center", color: "red" }}>{errDes}</Text>
+        )}
 
         <View
           style={{
@@ -183,8 +248,19 @@ export default function RecruiterRegister({ navigation, userType }) {
             placeholder="Enter Company Career Email"
             value={careerEmail}
             onChangeText={(e) => setCareerEmail(e)}
+            onFocus={() => {
+              setErrEmail("");
+            }}
+            onBlur={() => {
+              if (description.length === 0) {
+                setErrEmail("Email is required");
+              }
+            }}
           />
         </View>
+        {errEmail.length !== 0 && (
+          <Text style={{ textAlign: "center", color: "red" }}>{errEmail}</Text>
+        )}
 
         <View
           style={{
@@ -216,8 +292,21 @@ export default function RecruiterRegister({ navigation, userType }) {
             placeholder="Enter Company Address"
             value={address}
             onChangeText={(e) => setAddress(e)}
+            onFocus={() => {
+              setErrAddress("");
+            }}
+            onBlur={() => {
+              if (description.length === 0) {
+                setErrAddress("Address is required");
+              }
+            }}
           />
         </View>
+        {errAddress.length !== 0 && (
+          <Text style={{ textAlign: "center", color: "red" }}>
+            {errAddress}
+          </Text>
+        )}
 
         <View
           style={{
@@ -237,7 +326,7 @@ export default function RecruiterRegister({ navigation, userType }) {
           <TouchableOpacity
             style={{
               marginRight: 10,
-              backgroundColor: "#FFDD83",
+              backgroundColor: numEmployess === "<5" ? "#FFDD83" : "#F4F5FE",
               paddingHorizontal: 5,
               paddingVertical: 10,
               borderRadius: 5,
@@ -255,7 +344,7 @@ export default function RecruiterRegister({ navigation, userType }) {
           <TouchableOpacity
             style={{
               marginRight: 10,
-              backgroundColor: "#FFDD83",
+              backgroundColor: numEmployess === "<15" ? "#FFDD83" : "#F4F5FE",
               paddingHorizontal: 5,
               paddingVertical: 10,
               borderRadius: 5,
@@ -272,7 +361,7 @@ export default function RecruiterRegister({ navigation, userType }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={{
-              backgroundColor: "#FFDD83",
+              backgroundColor: numEmployess === ">15" ? "#FFDD83" : "#F4F5FE",
               paddingHorizontal: 5,
               paddingVertical: 10,
               borderRadius: 5,
@@ -297,6 +386,7 @@ export default function RecruiterRegister({ navigation, userType }) {
             borderRadius: 10,
             marginTop: 20,
           }}
+          onPress={() => onSubmit()}
         >
           <Text
             style={{

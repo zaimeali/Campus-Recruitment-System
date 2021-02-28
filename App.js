@@ -4,17 +4,22 @@ import React from "react";
 import Route from "./routes/Route";
 
 // Firebase
-// import * as firebase from "firebase";
-// import { firebaseConfig } from "./auth/firebase";
+import * as firebase from "firebase";
+import { firebaseConfig } from "./auth/firebase";
 
 // Initialize Firebase
-// if (firebase.apps.length === 0) {
-//   firebase.initializeApp(firebaseConfig);
-// }
+if (firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 // Redux
-// import { Provider } from "react-redux";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 export default function App() {
-  return <Route />;
+  return (
+    <Provider store={store}>
+      <Route />
+    </Provider>
+  );
 }

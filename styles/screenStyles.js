@@ -11,3 +11,14 @@ export const authCommonStyles = StyleSheet.create({
     alignItems: "center",
   },
 });
+
+export const rootCommonStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  body: {
+    flex: 0.9,
+  },
+});
